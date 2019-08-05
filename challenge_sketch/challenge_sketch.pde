@@ -54,17 +54,21 @@ void drawShape2 (float x, float y, float width, float height, float pieces, floa
   for (int i = 0;i < loopCount;i++){
     stroke(255);
     float width_mod = width/2+bar_width*i;
-    float height_mod = height-square_size;
-    line(x+width_mod,y,x+width_mod,y+height_mod-bar_width*i);
+    float yToCenter = y+height-square_size;
+    line(x+width_mod,y,x+width_mod,y+yToCenter-bar_width*i);
+    line(x+width_mod,y+yToCenter+bar_width*i,x+width_mod,y+height);
   }
-  /*
+  
   //draw left
    for (int i = 0;i < loopCount;i++){
     stroke(255);
     float width_mod = width/2-bar_width*i;
-    line(x+width_mod,y,x+width_mod,y+height);
+    float yToCenter = y+height-square_size;
+    
+    line(x+width_mod,y,x+width_mod,y+yToCenter-bar_width*i);
+    line(x+width_mod,y+yToCenter+bar_width*i,x+width_mod,y+height);
   }
-  */
+  
   
 }
 
