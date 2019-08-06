@@ -83,6 +83,7 @@ class Paddle{
     rect(position.x,mouseY,bodywidth,bodyheight);
   }
   
+  //THIS IS A MAJOR TODO. IT DOES NOT WORK
   //checks if target is within paddle
   boolean checkCollision(Ball target){
     
@@ -95,6 +96,7 @@ class Paddle{
     
     }
     else return false;
+    
   }
   
   

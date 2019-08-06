@@ -8,13 +8,16 @@ void setup(){
 
 
 void draw(){
-  drawShape(10, 10, 500, 400, 4, 3);
+  fill(255);
+  rect(0,0,width,height);
+  drawShape(10, 10, 600, 400, 12, 3);
 }
 
 
 void drawNoiseRect(int x, int y, int w, int h, float intensity){
   float noiseScale = intensity;
   
+  strokeWeight(1);
   int px,py,nx,ny;
   
   px = x;
@@ -24,10 +27,9 @@ void drawNoiseRect(int x, int y, int w, int h, float intensity){
   for (int i = 0; i < h; i++){
       py = py+1;
       for (int j = 0; j < w ; j++){
-        
-      float noiseVal = noise(noiseScale);
-      //);
-      stroke(random(125,noise(noiseScale*py)));
+        float noiseVal = noise(px*noiseScale,(px+1)*noiseScale) ;
+        print(noiseVal+ " ");
+        stroke(noiseVal*255);
         px= px+1;
         line(px, py, px+1, py);
   
@@ -39,9 +41,9 @@ void drawNoiseRect(int x, int y, int w, int h, float intensity){
 
 void drawShape (float x, float y, float width, float height, float pieces, float spacing){
   fill(0);
-  strokeWeight(spacing);
-  drawNoiseRect((int)x,(int)y,(int)width,(int)height,.3);
+  drawNoiseRect((int)x,(int)y,(int)width,(int)height,.003);
   
+  strokeWeight(spacing);
   
   //calculate square size
   float square_size = height >= width ? width : height;
