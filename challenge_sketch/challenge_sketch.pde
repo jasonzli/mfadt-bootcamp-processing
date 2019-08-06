@@ -110,8 +110,23 @@ void drawShape (float x, float y, float width, float height, float pieces, float
     They draw from the edge towards center then from the middle+offset 
     to the opposite edge. 
     
+    Like this:
+    
+    edge          edge
+    |---       ---|
+    |-----   -----|
+    |-------------|
+    |-----   -----|
+    |---       ---|
+    
     height_mod is the heigh modifier, it tracks how far off the center we are in a particular loop
     bar_width*i is the off set from center based on how many bars we've drawn
+
+    */
+    
+    /*
+    the center line is created in the i = 0 condition, 
+    where all lines meet in the middle like Maren Morris in that Zedd song
     */
     
     //Draws down from center line
@@ -133,6 +148,11 @@ void drawShape (float x, float y, float width, float height, float pieces, float
     width_mod = width/2-bar_width*i;
     line(x+width_mod,y,x+width_mod,yToCenter-bar_width*i);
     line(x+width_mod,yToCenter+bar_width*i,x+width_mod,y+height);
+    
+    /*
+    then it loops again but the bar_width*i will be a larger value and the lines will
+    be further away
+    */
   }
   
   
