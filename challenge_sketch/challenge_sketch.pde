@@ -160,7 +160,6 @@ void drawShape (float x, float y, float width, float height, float pieces, float
     then it loops again but the bar_width*i will be a larger value and the lines will
     be further away
     
-    currently it will draw one more than can actually fit sometimes
     */
   }
   
