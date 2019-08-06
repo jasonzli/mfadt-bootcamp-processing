@@ -16,13 +16,19 @@ void draw(){
   This particular method first draws a rectangle and then applies solid white lines on top
   because it involves hundreds, thousands of line() calls, it is slow
   */
-  drawShape(10, 10, 300, 400, 5 , 1);
+ // drawShape(10, 10, 300, 400, 5 , 1);
   
   
 }
 
 
+//draw on spacebar pressed so it isn't constantly drawing
+void keyPressed(){
+  if (key == ' ' ){
+    drawShape(10,10,300,400,5,1);
+  }
 
+}
 
 //this function draws the noise background for the image
 private void drawNoiseRect(int x, int y, int w, int h, float intensity){
