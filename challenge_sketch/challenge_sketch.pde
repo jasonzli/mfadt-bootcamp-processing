@@ -16,13 +16,16 @@ void draw(){
   This particular method first draws a rectangle and then applies solid white lines on top
   because it involves hundreds, thousands of line() calls, it is slow
   */
-  drawShape(10, 10, 600, 400, 3, 1);
+  drawShape(10, 10, 300, 400, 5 , 1);
+  
+  
 }
 
 
 
 
-void drawNoiseRect(int x, int y, int w, int h, float intensity){
+//this function draws the noise background for the image
+private void drawNoiseRect(int x, int y, int w, int h, float intensity){
   
   //not used
   float noiseScale = intensity;
@@ -73,6 +76,11 @@ void drawNoiseRect(int x, int y, int w, int h, float intensity){
   
 }
 
+
+/*
+This function takes an x position, a y position, a width, height,
+pieces (how many "divisions" ), and a spacing (line/stroke weight);
+*/
 void drawShape (float x, float y, float width, float height, float pieces, float spacing){
   fill(0);
   fill(234,225,211);
@@ -83,7 +91,6 @@ void drawShape (float x, float y, float width, float height, float pieces, float
   
   //calculate square size
   float square_size = height >= width ? width : height;
-  //This does not get used
  
   //divide the whole thing by how many pieces and then use that value as the bar width
   // bar_width is also the distance between lines, which is what I am using here
@@ -91,7 +98,7 @@ void drawShape (float x, float y, float width, float height, float pieces, float
   
   //how many loops, which is the division of the height by how many bars can fit
   //floor() rounds all decimal values down);
-  int loopCount = floor((height/2/bar_width));
+  int loopCount = floor((square_size/2/bar_width));
   
   stroke(255);
   fill(255);
@@ -152,6 +159,8 @@ void drawShape (float x, float y, float width, float height, float pieces, float
     /*
     then it loops again but the bar_width*i will be a larger value and the lines will
     be further away
+    
+    currently it will draw one more than can actually fit sometimes
     */
   }
   
