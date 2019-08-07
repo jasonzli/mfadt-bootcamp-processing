@@ -16,7 +16,7 @@ void draw(){
   This particular method first draws a rectangle and then applies solid white lines on top
   because it involves hundreds, thousands of line() calls, it is slow
   */
- // drawShape(10, 10, 300, 400, 5 , 1);
+  drawShape(10, 10, 300, 400, 5 , 1);
   
   
 }
@@ -47,6 +47,8 @@ private void drawNoiseRect(int x, int y, int w, int h, float intensity){
   px = x;
   py = y;
   
+  float z = 1;
+  
   /* This loop will start filling in a square with random black intensity
   *  It does this by starting at the top left of the square and drawing 1 pixel long lines
   *  toward the x+width position. 
@@ -65,10 +67,10 @@ private void drawNoiseRect(int x, int y, int w, int h, float intensity){
         
         //noise value based on position within 
         //look up noise() documentation to understand Perlin noise
-        float noiseVal = noise(px*noiseScale,py*noiseScale);
+        float noiseVal = noise(px*noiseScale,py*noiseScale,lerp(z,mouseX,.003));
         
         //this makes the stroke of a random strength between the noise and 1,
-        strokeWeight(random(noiseVal,1));
+        strokeWeight(noiseVal);
        
         
         line(px, py, nx+strokeMod, ny+strokeMod);
