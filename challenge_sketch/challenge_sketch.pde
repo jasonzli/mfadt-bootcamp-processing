@@ -25,7 +25,7 @@ void draw(){
 //draw on spacebar pressed so it isn't constantly drawing
 void keyPressed(){
   if (key == ' ' ){
-    drawShape(10,10,300,400,5,1);
+    drawShape(10,10,600,400,6,4);
   }
 
 }
