@@ -2,11 +2,19 @@ import processing.video.*;
 
 Capture video;
 //color trackColor;
-float threshold = 25;
+float threshold = 80;
+float motionX = 0;
+float motionY = 0;
+  
+float lerpX = 0;
+float lerpY = 0;
+
+
 PImage prev;
  
 void setup(){
   size(640,480);
+  frameRate(100);
   String[] cameras = Capture.list();
   printArray(cameras);
   video  = new Capture(this, width, height);
@@ -26,13 +34,12 @@ void draw(){
   //image(video,0,0);
   
   
-  threshold = 75;
-  
   float avgX = 0;
   float avgY = 0;
   
   int count = 0;
   
+  loadPixels();
   for(int x = 0; x < video.width; x++){
     for(int y = 0; y<video.height; y++){
       int loc = x+y * video.width;
@@ -51,9 +58,9 @@ void draw(){
         avgX += x;
         avgY += y;
         count++;
-        prev.pixels[loc] = color(255);
+        pixels[loc] = color(255);
       }else{
-        prev.pixels[loc] = color(0);
+        pixels[loc] = color(0);
       }
     }
   }
@@ -61,14 +68,15 @@ void draw(){
   updatePixels();
   
   if(count>200){
-    avgX = avgX / count;
-    avgY = avgY / count;
-    
+    motionX = avgX / count;
+    motionY = avgY / count;
+  }
+    lerpX = lerp(lerpX, motionX,0.1);
+    lerpY = lerp(lerpY, motionY,0.1);
     fill(255,0,244);
     strokeWeight(4.0);
     stroke(0);
-    ellipse(avgX, avgY, 24, 24);
-  }
+    ellipse(lerpX, lerpY, 36, 36);
 }
 
 float distSq(float x1, float y1, float z1, float x2, float y2, float z2){
