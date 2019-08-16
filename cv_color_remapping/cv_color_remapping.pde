@@ -7,7 +7,21 @@ PVector Red =  new PVector(255,0,0);
 PVector Green =  new PVector(0,255,0);
 PVector Blue =  new PVector(0,0,255);
 boolean drawn = false;
-      
+
+
+float time;
+float wait = 5000;
+
+boolean tick;
+
+float[] colorR;
+float[] colorG;
+float[] colorB;
+
+float pR = 0;
+float pG = 0;
+float pB = 0;
+
 float threshold = 80;
 int stage = 0;
 
@@ -27,8 +41,12 @@ void setup(){
     printArray(cameras);
     video = new Capture(this,width,height);
     video.start();
+    time = millis();
     picture = loadImage("Picasso-1.jpg");
     picture.resize(0,680);
+    colorR = new float[picture.width*picture.height];
+    colorG = new float[picture.width*picture.height];
+    colorB = new float[picture.width*picture.height];
     textSize(32);
 }
 
@@ -49,6 +67,9 @@ void draw(){
       getBlue();
       break;
     case 3:
+      showTemp();
+      break;
+    case 4:
       drawPainting();
       break;   
   }
@@ -59,10 +80,10 @@ void getRed(){
   image(video,0,0);
   fill(0,0,0);
   noStroke();
-  rect(10,20,550,40);
+  rect(10,20,550,70);
   
   fill(255,255,255);
-  text("Please give me a red and click on it", 10, 60);
+  text("Please show me a red and click on it", 10, 60);
   
   noFill();
   
@@ -77,10 +98,10 @@ void getGreen(){
   image(video,0,0);
   fill(0,0,0);
   noStroke();
-  rect(10,20,580,40);
+  rect(100,20,580,70);
   
   fill(255,255,255);
-  text("Please give me a green and click on it", 10, 60);
+  text("Now, show me a green and click on it", 100, 60);
   
   noFill();
   strokeWeight(4);
@@ -93,10 +114,10 @@ void getBlue(){
   image(video,0,0);
   noStroke();
   fill(0,0,0);
-  rect(10,20,580,40);
+  rect(220,20,580,70);
   
   fill(255,255,255);
-  text("Please give me a blue and click on it", 10, 60);
+  text("Finally, show me a blue and click on it", 220, 60);
   
   noFill();
   strokeWeight(4);
@@ -105,7 +126,39 @@ void getBlue(){
   
 }
 
+void showTemp(){
+  //
+  if(millis() - time >= wait){
+    tick = !tick;
+    time = millis();
+  }
+  
+  if(tick){
+    stage++;
+  }
+  
+  
+  fill(0,0,0);
+  noStroke();
+  rect(0,0,width,height);
+  
+  fill(255,255,255);
+  if (millis() - time == 0){
+    
+  }
+  String timer = nf(int((millis() - time)*100/wait),3) + "%";
+  if (tick){
+    timer = "100%";
+  }
+  text(timer, 100, 90);
+  text("Now I'm going to try and draw this with the colors you showed me!", 220, 60);
+  image(picture,width/2 - picture.width/2,150,picture.width,picture.height);
+  
+}
+
 void drawPainting(){
+  tick = false;
+  
   fill(0,0,0);
   noStroke();
   rect(0,0,width,height);
@@ -150,6 +203,13 @@ void drawPainting(){
       v1.add(v2.add(v3));
       
       PVector colorVector = v1;
+      
+      //These are the target colors
+      colorR[loc] = colorVector.x;
+      colorG[loc] = colorVector.y;
+      colorB[loc] = colorVector.z;
+      
+      
 //colorspace r: rx, ry, rz
 //colorspace g: gx, gy, gz
 //colorspace b: bx, by, bz
@@ -185,6 +245,48 @@ void drawPainting(){
   
   picture.updatePixels();
   drawn = true;
+}
+
+void setupValues(){
+  picture.loadPixels();
+  
+  for (int x = 0; x < picture.width; x++){
+    for (int y = 0; y < picture.height; y++){
+      
+      int loc = x+y * picture.width;
+      color currentColor = picture.pixels[loc];
+      float r1 = red(currentColor);
+      float g1 = green(currentColor);
+      float b1 = blue(currentColor);
+      //float r2 = 2*r1 - red(redValue);
+      //float g2 = 2*g1 - green(greenValue);
+      //float b2 = 2*b1 - blue(blueValue);
+      
+      float r2 = map(r1, 0,255, 0, red(redValue)); 
+      float g2 = map(g1, 0,255, 0, green(greenValue)); 
+      float b2 = map(b1, 0,255, 0, blue(blueValue)); 
+      //your color: x, y, z
+      
+      PVector v1 = new PVector
+      (redDistance.x * r1/255,redDistance.y * r1/255, redDistance.z *r1/255);
+      
+      PVector v2 = new PVector
+      (greenDistance.x * g1/255,greenDistance.y * g1/255, greenDistance.z *g1/255);
+      
+      PVector v3 = new PVector
+      (blueDistance.x * b1/255,blueDistance.y * b1/255, blueDistance.z *b1/255);
+      
+      v1.add(v2.add(v3));
+      
+      PVector colorVector = v1;
+
+      
+      colorR[loc] = colorVector.x;
+      colorG[loc] = colorVector.y;
+      colorB[loc] = colorVector.z;
+      
+    }
+  }
 }
 
 void keyPressed(){
@@ -230,8 +332,11 @@ void mousePressed(){
       //blueDistance.limit(255);
       println(blueDistance);
       stage++;
+      time = millis();
       break;
     case 3:
+      break;  
+    case 4:
       print(redDistance);
       print(greenDistance);
       println(blueDistance);
