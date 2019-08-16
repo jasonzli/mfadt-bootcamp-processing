@@ -76,6 +76,9 @@ void draw(){
 }
 
 void getRed(){
+  
+    time = millis();
+    tick = false;
   video.loadPixels();
   image(video,0,0);
   fill(0,0,0);
@@ -158,6 +161,14 @@ void showTemp(){
 
 void drawPainting(){
   tick = false;
+  if(millis() - time >= wait){
+    tick = !tick;
+    time = millis();
+  }
+  
+  if(tick){
+    stage=0;
+  }
   
   fill(0,0,0);
   noStroke();
